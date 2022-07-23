@@ -145,7 +145,7 @@ crs_wgs84 = QgsCoordinateReferenceSystem("epsg:4326")
 ###################################################################
 # write to CSV
 ###################################################################
-# Esto fue extraído de clean 
+# Esto fue extraído de .... 
 print('outputting the data')
 
 with open(outpath, 'w') as output_file:

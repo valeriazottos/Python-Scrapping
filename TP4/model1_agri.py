@@ -142,10 +142,10 @@ crs_wgs84 = QgsCoordinateReferenceSystem("epsg:4326")
         if feedback.isCanceled():
             return {}
         
-###################################################################
-# write to CSV
-###################################################################
-# Esto fue extraído de .... 
+#######################################################
+#############Para exportar a csv#######################
+
+
 print('outputting the data')
 
 with open(outpath, 'w') as output_file:
@@ -157,6 +157,8 @@ with open(outpath, 'w') as output_file:
         output_file.write(line)
 
 print('DONE!')
+
+# Esto fue extraído de sebastianhohmann/gis_course
 
     def name(self):
         return 'model1'

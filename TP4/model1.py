@@ -5,7 +5,7 @@ Group :
 With QGIS : 32208
 """
 # seteamos los  paths de inputs y  outputs
-mainpath = "/Users/magibbons/Desktop/Herramientas/Clae5/input"
+mainpath = "/Volumes/GoogleDrive-112553083728584115268/My Drive/Herramientas computacionales/Clae 4"
 outpath = "{}/output".format(mainpath)
 
 

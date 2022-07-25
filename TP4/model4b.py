@@ -1,4 +1,3 @@
-
 """
 Model exported as python.
 Name : model4b
@@ -46,7 +45,7 @@ class Model4b(QgsProcessingAlgorithm):
         results = {}
         outputs = {}
 
-        # Extract by attribute
+        # Extract by attribute: nos sirve para ver si la distancia del vértice al centroid es mayor a cero. Usamos la capa "extract_vertices" y usamos el attribute "distance", denominamos a esto: extract_by_attribute. Vemos que calcula la distancia a partir del vértice (ubicado en la costa) al centroid. 
         alg_params = {
             'FIELD': 'distance',
             'INPUT': 'Vertices_e2d3c689_9247_456b_95af_13e7ec7be064',
@@ -61,7 +60,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Add geometry attributes - lat_lon_drop
+        # Add geometry attributes - lat_lon_drop--> input layer: centroids_lat_lon_drop_fields--> calculate using: layer CRS--> added geom info: add_geo_coast.
         alg_params = {
             'CALC_METHOD': 0,  # Layer CRS
             'INPUT': 'Remaining_fields_93de1f30_4209_4a4c_bbc4_034b7f895911',
@@ -74,7 +73,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Centroids
+        # Centroids: en este modelo calculamos la distancia a la costa. Primero usamos la herramienta"fixed geometrys" e importamos el archivo coastline.shp y lo llamamos fixedgeo_coast. Repetimos lo mismo pero con el shapefile de countries y lo nombramos fixedgeo_countries. Luego de esto, buscamos los centroides y usamos como input layer el fixedgeo_countries. Esto nos genera un punto en el centroidde de cada país. 
         alg_params = {
             'ALL_PARTS': False,
             'INPUT': 'Fixed_geometries_81c5284c_bce7_4057_a71b_843998c64e07',
@@ -87,7 +86,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # v.distance
+        # v.distance: calculamos distancias a través del comando "v.distance" desde el mapa vectorial: "centroids_w_coord" hacia el mapa vectorial "coastout". Este comando crea dos capas, una que denominamos: nearout y otra distout.
         alg_params = {
             'GRASS_MIN_AREA_PARAMETER': 0.0001,
             'GRASS_OUTPUT_TYPE_PARAMETER': 0,  # auto
@@ -116,8 +115,8 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - cent_lat
-        alg_params = {
+        # Field calculator - cent_lat: input layer: extract_by_attribute, field name: cent_lat, type: float, result field lenght:10 y result field precision: 10. Fórmula: attribute($currentfeature, 'ycoord'). Lo nombramos: added_field_cent_lat. 
+    alg_params = {
             'FIELD_LENGTH': 10,
             'FIELD_NAME': 'cent_lat',
             'FIELD_PRECISION': 10,
@@ -133,7 +132,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - cat adjust
+        # Field calculator - cat adjust: usamos nearout como input layer, usamos la categoría cat (la corregimos y ponemos como número entero, result field lenght=4 y result field precision =3), calculamos la fórmula: attribute($currentfeature, 'cat')-1. Nombramos esto como: nearest_cat_adjust. 
         alg_params = {
             'FIELD_LENGTH': 4,
             'FIELD_NAME': 'cat',
@@ -150,7 +149,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) - centroids_coast_joined
+        # Drop field(s) - centroids_coast_joined: de la capa "centroids_nearest_coast_joined" borramos las variables que ya no usamos y denominamos a esta nueva capa como: centroids_nearest_coast_joins_dropfields
         alg_params = {
             'COLUMN': ['featurecla','scalerank','LABELRANK','SOVEREIGNT','SOV_A3','ADM0_DIF','LEVEL','TYPE','TLC','ADM0_A3','GEOU_DIF','GEOUNIT','GU_A3','SU_DIF','SUBUNIT','SU_A3','BRK_DIFF','NAME','NAME_LONG','BRK_A3','BRK_NAME','BRK_GROUP','ABBREV','POSTAL','FORMAL_EN','FORMAL_FR','NAME_CIAWF','NOTE_ADM0','NOTE_BRK','NAME_SORT','NAME_ALT','MAPCOLOR7','MAPCOLOR8','MAPCOLOR9','MAPCOLOR13','POP_EST','POP_RANK','POP_YEAR','GDP_MD','GDP_YEAR','ECONOMY','INCOME_GRP','FIPS_10','ISO_A2','ISO_A2_EH','ISO_A3_EH','ISO_N3','ISO_N3_EH','UN_A3','WB_A2','WB_A3','WOE_ID','WOE_ID_EH','WOE_NOTE','ADM0_ISO','ADM0_DIFF','ADM0_TLC','ADM0_A3_US','ADM0_A3_FR','ADM0_A3_RU','ADM0_A3_ES','ADM0_A3_CN','ADM0_A3_TW','ADM0_A3_IN','ADM0_A3_NP','ADM0_A3_PK','ADM0_A3_DE','ADM0_A3_GB','ADM0_A3_BR','ADM0_A3_IL','ADM0_A3_PS','ADM0_A3_SA','ADM0_A3_EG','ADM0_A3_MA','ADM0_A3_PT','ADM0_A3_AR','ADM0_A3_JP','ADM0_A3_KO','ADM0_A3_VN','ADM0_A3_TR','ADM0_A3_ID','ADM0_A3_PL','ADM0_A3_GR','ADM0_A3_IT','ADM0_A3_NL','ADM0_A3_SE','ADM0_A3_BD','ADM0_A3_UA','ADM0_A3_UN','ADM0_A3_WB','CONTINENT','REGION_UN','SUBREGION','REGION_WB','NAME_LEN','LONG_LEN','ABBREV_LEN','TINY','HOMEPART','MIN_ZOOM','MIN_LABEL','MAX_LABEL','LABEL_X','LABEL_Y','NE_ID','WIKIDATAID','NAME_AR','NAME_BN','NAME_DE','NAME_EN','NAME_ES','NAME_FA','NAME_FR','NAME_EL','NAME_HE','NAME_HI','NAME_HU','NAME_ID','NAME_IT','NAME_JA','NAME_KO','NAME_NL','NAME_PL','NAME_PT','NAME_RU','NAME_SV','NAME_TR','NAME_UK','NAME_UR','NAME_VI','NAME_ZH','NAME_ZHT','FCLASS_ISO','TLC_DIFF','FCLASS_TLC','FCLASS_US','FCLASS_FR','FCLASS_RU','FCLASS_ES','FCLASS_CN','FCLASS_TW','FCLASS_IN','FCLASS_NP','FCLASS_PK','FCLASS_DE','FCLASS_GB','FCLASS_BR','FCLASS_IL','FCLASS_PS','FCLASS_SA','FCLASS_EG','FCLASS_MA','FCLASS_PT','FCLASS_AR','FCLASS_JP','FCLASS_KO','FCLASS_VN','FCLASS_TR','FCLASS_ID','FCLASS_PL','FCLASS_GR','FCLASS_IT','FCLASS_NL','FCLASS_SE','FCLASS_BD','FCLASS_UA','ADMIN_2','ISO_A3_2'],
             'INPUT': 'Joined_layer_44034d24_0d10_4045_9cc7_bc4516c4dd6f',
@@ -163,7 +162,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) - centroids_w_coord
+        # Drop field(s) - centroids_w_coord: eliminamos las siguientes variables, de la input layer "centroids_w_coord". A estea nueva capa lo llamamos "centroidsout".
         alg_params = {
             'COLUMN': ['featurecla','scalerank','LABELRANK','SOVEREIGNT','SOV_A3','ADM0_DIF','LEVEL','TYPE','TLC','ADM0_A3','GEOU_DIF','GEOUNIT','GU_A3','SU_DIF','SUBUNIT','SU_A3','BRK_DIFF','NAME','NAME_LONG','BRK_A3','BRK_NAME','BRK_GROUP','ABBREV','POSTAL','FORMAL_EN','FORMAL_FR','NAME_CIAWF','NOTE_ADM0','NOTE_BRK','NAME_SORT','NAME_ALT','MAPCOLOR7','MAPCOLOR8','MAPCOLOR9','MAPCOLOR13','POP_EST','POP_RANK','POP_YEAR','GDP_MD','GDP_YEAR','ECONOMY','INCOME_GRP','FIPS_10','ISO_A2','ISO_A2_EH','ISO_A3_EH','ISO_N3','ISO_N3_EH','UN_A3','WB_A2','WB_A3','WOE_ID','WOE_ID_EH','WOE_NOTE','ADM0_ISO','ADM0_DIFF','ADM0_TLC','ADM0_A3_US','ADM0_A3_FR','ADM0_A3_RU','ADM0_A3_ES','ADM0_A3_CN','ADM0_A3_TW','ADM0_A3_IN','ADM0_A3_NP','ADM0_A3_PK','ADM0_A3_DE','ADM0_A3_GB','ADM0_A3_BR','ADM0_A3_IL','ADM0_A3_PS','ADM0_A3_SA','ADM0_A3_EG','ADM0_A3_MA','ADM0_A3_PT','ADM0_A3_AR','ADM0_A3_JP','ADM0_A3_KO','ADM0_A3_VN','ADM0_A3_TR','ADM0_A3_ID','ADM0_A3_PL','ADM0_A3_GR','ADM0_A3_IT','ADM0_A3_NL','ADM0_A3_SE','ADM0_A3_BD','ADM0_A3_UA','ADM0_A3_UN','ADM0_A3_WB','CONTINENT','REGION_UN','SUBREGION','REGION_WB','NAME_LEN','LONG_LEN','ABBREV_LEN','TINY','HOMEPART','MIN_ZOOM','MIN_LABEL','MAX_LABEL','LABEL_X','LABEL_Y','NE_ID','WIKIDATAID','NAME_AR','NAME_BN','NAME_DE','NAME_EN','NAME_ES','NAME_FA','NAME_FR','NAME_EL','NAME_HE','NAME_HI','NAME_HU','NAME_ID','NAME_IT','NAME_JA','NAME_KO','NAME_NL','NAME_PL','NAME_PT','NAME_RU','NAME_SV','NAME_TR','NAME_UK','NAME_UR','NAME_VI','NAME_ZH','NAME_ZHT','FCLASS_ISO','TLC_DIFF','FCLASS_TLC','FCLASS_US','FCLASS_FR','FCLASS_RU','FCLASS_ES','FCLASS_CN','FCLASS_TW','FCLASS_IN','FCLASS_NP','FCLASS_PK','FCLASS_DE','FCLASS_GB','FCLASS_BR','FCLASS_IL','FCLASS_PS','FCLASS_SA','FCLASS_EG','FCLASS_MA','FCLASS_PT','FCLASS_AR','FCLASS_JP','FCLASS_KO','FCLASS_VN','FCLASS_TR','FCLASS_ID','FCLASS_PL','FCLASS_GR','FCLASS_IT','FCLASS_NL','FCLASS_SE','FCLASS_BD','FCLASS_UA'],
             'INPUT': 'Added_geom_info_1ffb65aa_0b9f_4f0a_a89e_6ccff4be9c1f',
@@ -176,7 +175,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Join attributes by field value - centroids y coast
+        # Join attributes by field value - centroids y coast: unimos dos bases: "centroidsout" y "nearest_cat_adjust_dropfields" usando la variable ISO_A3. A esta capa la llamamos: centroids_nearest_coast_joined. 
         alg_params = {
             'DISCARD_NONMATCHING': False,
             'FIELD': 'ISO_A3',
@@ -195,7 +194,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Add geometry attributes
+        # Add geometry attributes: usamos como input layer la capa "centroids" creada previamente, esto genera dos columnas con la latitud y longitud del centroide. 
         alg_params = {
             'CALC_METHOD': 0,  # Layer CRS
             'INPUT': 'Centroids_498eaa86_4596_4e93_8e12_f658405b5480',
@@ -208,7 +207,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - coast_lon
+        # Field calculator - coast_lon: input layer: add_field_coast_lat--> field name: coast_lon-->type:float-->  result field lenght:10 y result field precision: 10. Fórmula: attribute($currentfeature, 'xcoord'). Lo nombramos: added_field_coast_lon.
         alg_params = {
             'FIELD_LENGTH': 10,
             'FIELD_NAME': 'coast_lon',
@@ -225,7 +224,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Extract vertices
+        # Extract vertices: extraemos los vértices de la input layer: centroids_nearest_coast_distance_joined y la denominamos: extract_vertices.
         alg_params = {
             'INPUT': 'Joined_layer_e36e26be_2a2f_4cc7_9ec1_0494d1d6d1f1',
             'OUTPUT': parameters['Extract_vertices']
@@ -237,7 +236,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Fix geometries - countries
+        # Fix geometries - countries: en este modelo calculamos la distancia a la costa. Primero vamos a la herramienta de QGIS "fixed geometrys" e importamos el archivo coastline.shp y lo llamamos fixgeo_countries.
         alg_params = {
             'INPUT': '/Volumes/GoogleDrive-112553083728584115268/My Drive/Herramientas computacionales/Clae 4/input/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp',
             'OUTPUT': parameters['Fixegeo_countries']
@@ -249,7 +248,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Fix geometries - coast
+        # Fix geometries - coast: en este modelo calculamos la distancia a la costa. Vamos a la herramienta de QGIS "fixed geometrys" e importamos el archivo coastline.shp y lo llamamos fixgeo_coast.
         alg_params = {
             'INPUT': '/Volumes/GoogleDrive-112553083728584115268/My Drive/Herramientas computacionales/Clae 4/input/ne_10m_coastline/ne_10m_coastline.shp',
             'OUTPUT': parameters['Fixgeo_coast']
@@ -261,7 +260,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) - cent_lat_lon
+        # Drop field(s) - cent_lat_lon: eliminamos variables de la ainput layer: added_field_cent_lon. Denominamos al output creado: Centroids_lat_lon_drop_fields
         alg_params = {
             'COLUMN': ['fid','cat','xcoord','ycoord','fid_2','cat_2','vertex_index','vertex_part','vertex_part','_index','angle'],
             'INPUT': 'Calculated_1febcb44_99b7_4ad6_8df0_54b413eb9914',
@@ -274,7 +273,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator
+        # Field calculator: input layer=added_field_cent_lat, field name=cent_lon, type= float,  result field lenght:10 y result field precision: 10. Fórmula: attribute($currentfeature, 'xcoord'). Lo nombramos: added_field_cent_lon. 
         alg_params = {
             'FIELD_LENGTH': 10,
             'FIELD_NAME': 'cent_lon',
@@ -291,7 +290,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) - fixgeo_coast
+        # Drop field(s) - fixgeo_coast: Eliminamos, a través de la herramienta "drop fields",  la variable scalerank de la input layer "fixgeo_coast", nombramos el output como: coastout.
         alg_params = {
             'COLUMN': ['scalerank'],
             'INPUT': 'Fixed_geometries_41af6722_536f_4c86_aed8_1dde5e9411a3',
@@ -317,7 +316,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Drop field(s) - cat_adjust
+        # Drop field(s) - cat_adjust: Eliminamos las variables "xcoord" e "ycoord" de la capa "nearest_cat_adjust"
         alg_params = {
             'COLUMN': ['xcoord','ycoord'],
             'INPUT': 'Calculated_b7db16d1_69b1_490c_98a6_2fda30dec724',
@@ -330,7 +329,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Join attributes by field value
+        # Join attributes by field value: Realizamos un join con la input layer: distout, table field: cat, input layer 2: centroids_nearest_coast_joins_dropfields, table field 2: cat. La denominamos: centroids_nearest_coast_distance_joined
         alg_params = {
             'DISCARD_NONMATCHING': False,
             'FIELD': 'cat',
@@ -349,7 +348,7 @@ class Model4b(QgsProcessingAlgorithm):
         if feedback.isCanceled():
             return {}
 
-        # Field calculator - add_geo_coast
+        # Field calculator - add_geo_coast: input layer: add_geo_coast-->field name: coast_lat-->type:float-->  result field lenght:10 y result field precision: 10. Fórmula: attribute($currentfeature, 'ycoord'). Lo nombramos: added_field_coast_lat.
         alg_params = {
             'FIELD_LENGTH': 10,
             'FIELD_NAME': 'coast_lat',

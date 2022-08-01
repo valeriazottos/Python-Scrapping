@@ -1,0 +1,1 @@
+Creamos tres gráficos (ggplot, tmap y spmap) sobre cantidad de robos (thefts) por municipio (boroughs) en la ciudad de Londres. Los dos primeros los realizamos con R y el tercero con Stata. 

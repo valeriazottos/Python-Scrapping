@@ -26,7 +26,7 @@ shp2dta using london_sport.shp, database(ls) coord(coord_ls) genc(c) genid(id) r
 * Importamos y transformamos los datos de Excel a formato Stata 
 import delimited "$DATA/mps-recordedcrime-borough.csv", clear 
 * En Stata necesitamos que la variable tenga el mismo nombre en ambas bases para juntarlas
-keep if crimetype== "Theft & Handling" 
+keep if crimetype == "Theft & Handling" 
 rename borough name
 * preserve
 collapse (sum) crimecount, by(name)
@@ -48,7 +48,7 @@ save london_crime_shp_1.dta, replace
 *Cragamos el shapefile de london crime 
 use london_crime_shp_1.dta, clear
 
-*Nos quedamos con las variables que necesitamos y las guardamos 
+*Nos quedamos con las variables que necesitamos y las guardamos para usarlas como labels después
 keep x_c y_c name
 save "vars_theft.dta", replace
 
@@ -59,12 +59,11 @@ use london_crime_shp_1.dta, clear
 
 *Creamos el mapa 
 spmap crimecount using coord_ls, id(id) line(data("coord_ls.dta") color(gs10) size(vthin)) ///
-    clmethod(q) cln(6) ///
-    title("Number of thefts by borough") ///
+    clmethod(e) cln(6) ///
+    title("Number of thefts by borough in London") ///
     label(data("vars_theft.dta") x(x_c) y(y_c) label(name) size(tiny)) ///
     legend(size(vsmall) position(5) xoffset(1)) ///
     fcolor(Reds) plotregion(margin(b+15)) ndfcolor(gray) name(gtarea2,replace) 
-
 
 
 

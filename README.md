@@ -13,9 +13,9 @@ TP5:
     - Tarea 1: A partir de 3 gráficos que vimos en el video 1, los "corregimos" para que cumplan con los principios de Schwabish vistos en la primera parte de la clase.
     
     - Tarea 2: 
-            Creamos mapa de thefts de Londres con ggplot (R)
-            Creamos mapa de thefts de Londres con tmap  (R)
-            Creamos mapa de thefts de Londres con spmap (Stata)
-          Incluye códigos de R y STATA y archivo pdf con mapas y comentarios. 
+    Creamos mapa de thefts de Londres con ggplot (R)
+    Creamos mapa de thefts de Londres con tmap  (R)
+    Creamos mapa de thefts de Londres con spmap (Stata)
+    Incluye códigos de R y STATA y archivo pdf con mapas y comentarios. 
     
 

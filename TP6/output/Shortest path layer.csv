@@ -1,0 +1,2 @@
+start_id,start_coordinates,start_entry_cost,end_id,end_coordinates,end_exit_cost,cost_on_graph,total_cost
+A,"-58.051785, -29.785247",3486.4251050,B,"-58.711334, -28.571368",8958.7591715,213435.7206207,225880.9048973

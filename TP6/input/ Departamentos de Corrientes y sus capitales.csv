@@ -1,13 +1,13 @@
-﻿País ,Provincia,Departamento,Capital
+﻿Country,State,Departamento,City
 Argentina,Corrientes,Bella Vista,Bella Vista
-Argentina,Corrientes,Beron de Estrada ,San Antonio de Itati 
+Argentina,Corrientes,Departamento Beron de Estrada ,San Antonio de Itati 
 Argentina,Corrientes,Capital,Corrientes
 Argentina,Corrientes,Concepcion,Concepcion
 Argentina,Corrientes,Curuzu Cuatia,Curuzu Cuatia
 Argentina,Corrientes,Empedrado,Empedrado
 Argentina,Corrientes,Esquina,Esquina
-Argentina,Corrientes,General Alvear,Alvear
-Argentina,Corrientes,General Paz,Caa Cati
+Argentina,Corrientes,Departamento General Alvear,Alvear
+Argentina,Corrientes, General Paz,Caa Cati
 Argentina,Corrientes,Goya,Goya
 Argentina,Corrientes,Itati,Itati
 Argentina,Corrientes,Ituzaingo,Ituzaingo
@@ -19,8 +19,8 @@ Argentina,Corrientes,Paso de los Libres,Paso de los Libres
 Argentina,Corrientes,Saladas,Saladas
 Argentina,Corrientes,San Cosme,San Cosme
 Argentina,Corrientes,San Luis del Pasmar,San Luis del Palmar
-Argentina,Corrientes,San Martin ,La Cruz
-Argentina,Corrientes,San Miguel,San Miguel
+Argentina,Corrientes,Departamento San Martin ,La Cruz
+Argentina,Corrientes,Departamento San Miguel,Departamento San Miguel
 Argentina,Corrientes,San Roque,San Roque
 Argentina,Corrientes,Santo Tome,Santo Tome
 Argentina,Corrientes,Sauce,Sauce

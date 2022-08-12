@@ -1,0 +1,8 @@
+Primero buscamos las capitales de los departamentos de Corrientes y lo subimos a un CSV para geocodificarlos.
+En segundo lugar, añadimos shapefile de rutas de Argentina. A partir de esto generamos la matriz de OD entre las capitales de departamentos de Corrientes y también calculamos la ruta más rápida entre dos ciudades y generamos un mapa. 
+
+Ordenamos los archivos por : 
+
+csv con la matriz
+mapa con la ruta
+csv con las capitales de corrientes georeferenciadas (la tabla de atributos del shapefile)
